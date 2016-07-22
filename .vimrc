@@ -46,6 +46,11 @@ set si
 " show line numbers
 set number
 
+" support syntax highlighting of markdown files suffixed with *.md
+" in versions of vim < 7.4.480.  Note that this will use markdown syntax
+" highlighting for modula2 files.
+au BufNewFile,BufRead *.md setf markdown
+
 " don't wrap
 set nowrap
 
