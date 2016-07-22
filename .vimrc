@@ -19,13 +19,18 @@ set exrc
 " files for security reasons
 set secure
 
-
 " enable folding for all languages that have a syntax
 " set foldmethod=syntax
 
-" highlight column 80 with a color
-set colorcolumn=80
-highlight ColorColumn ctermbg=darkgray
+" highlight characters beyond 80 columns.  Check for existence
+" of colorcolumn property as it is not supported in earlier
+" vim versions
+if exists('+colorcolumn')
+  set colorcolumn=80
+  highlight ColorColumn ctermbg=darkgray
+else
+  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+endif
 
 " insert space characters whenever the tab key is pressed,
 " instead of inserting a tab.  Use Ctrl-V and then <Tab> 
