@@ -1,23 +1,81 @@
+" python with virtualenv support
+" py << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+"   project_base_dir = os.environ['VIRTUAL_ENV']
+"   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"   execfile(activate_this, dict(__file__=activate_this))
+" EOF
+
+
 " disable compatibility with vi?
-set nocompatible
-" filetype off
+set nocompatible  " required
+filetype off      " required
 
-" set the runtime path to include Vundle and initialize
-" set rtp+=~/.vim/bundle/Vundle.vim
-" call vundle#begin()
+" Set the runtime path to include Vundle and initialize.
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" Plugin 'wting/rust.vim'
+" for virtualenv support in vim
+Plugin 'jmcantrell/vim-virtualenv.git'
 
-" all of your plugins must be added before the following line
-" call vundle#end() " required
+" let Vundle manage Vundle, required
+Plugin 'gmark/Vundle.vim'
+
+" add your plugins here.  Whenever you add or update or remove a plugin,
+" be sure to run :PluginInstall from within vim
+
+Plugin 'vim-scripts/indentpython.vim'
+
+" a plugin for python tab completion
+" this plugin requires some other plugins, and needs to be
+" made aware of python virtualenvs
+" Plugin 'Valloric/YouCompleteMe'
+
+Plugin 'davidhalter/jedi-vim.git'
+
+" for syntax checking on each save
+Plugin 'scrooloose/syntastic'
+
+" PEP8 checking
+Plugin 'nvie/vim-flake8'
+
+" file tree browser
+Plugin 'scrooloose/nerdtree'
+
+" allows the use ctrl-p for searching
+Plugin 'kien/ctrlp.vim'
+
+" support git commands from within vim
+" Plugin 'tpope/vim-fugitive'
+
+" add a powerline display whoing info
+Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
+" all of your plugins must be added before the following lines
+call vundle#end()         " required
 filetype plugin indent on " required
 
-" enable using project-specific .vimrc files"
+" for pretty syntax highlighting
+let python_highlight_all=1
+syntax on
+
+" for use with NERDTREE, ignore pyc files
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignored files 
+
+" allow use of project-specific .vimrc files"
 set exrc
+
+" should be using UTF8 when working with python
+set encoding=utf-8
+
+" flag extraneous whitespace
+au BufRead, BufNewFile *.py match BadWhitespace /\s\+$/
 
 " restrict usage of some commands in non-default .vimrc
 " files for security reasons
-set secure
+" set secure
 
 " enable folding for all languages that have a syntax
 " set foldmethod=syntax
@@ -27,7 +85,7 @@ set secure
 " vim versions
 if exists('+colorcolumn')
   set colorcolumn=80
-  highlight ColorColumn ctermbg=darkgray
+  highlight ColorColumn ctermbg=gray
 else
   au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 endif
@@ -49,13 +107,13 @@ set number
 " support syntax highlighting of markdown files suffixed with *.md
 " in versions of vim < 7.4.480.  Note that this will use markdown syntax
 " highlighting for modula2 files.
-au BufNewFile,BufRead *.md setf markdown
+au BufNewFile,BufRead *.md set filetype=markdown
 
 " don't wrap
 set nowrap
 
 " set showmode
-set showmode
+" set showmode
 
 " set the text width for automatic word wrapping
 set tw=80
@@ -67,13 +125,13 @@ set softtabstop=4
 " set incsearch
 " set mouse=a
 set history=1000
-set clipboard=unnamedplus,autoselect
-set completeopt=menuone,menu,longest
-set wildignore+=*\\tmp\\*,*.swp,*.swo,*.zip,.git,.cabal-sandbox
-set wildmode=longest,list,full
-set wildmenu
+"set clipboard=unnamedplus,autoselect
+"set completeopt=menuone,menu,longest
+"set wildignore+=*\\tmp\\*,*.swp,*.swo,*.zip,.git,.cabal-sandbox
+"set wildmode=longest,list,full
+"set wildmenu
 set t_Co=256
-set cmdheight=1
+"set cmdheight=1
 
 " execute pathogen#infect()
 
@@ -139,16 +197,26 @@ map <Leader>n :NERDTreeToggle<CR>
 
 " use tabularize to map specific keys to some common Haskell patterns for
 " aligning code:
-let g:haskell_tabular = 1
+" let g:haskell_tabular = 1
 
-vmap a= :Tabularize /=<CR>
-vmap a; :Tabularize /::<CR>
-vmap a- :Tabularize /-><CR>
+" vmap a= :Tabularize /=<CR>
+" vmap a; :Tabularize /::<CR>
+" vmap a- :Tabularize /-><CR>
 
 " use the ctrl-p fuzzy file search plugin to allow quick browing of a project
 " based on a fuzzy text search of the filename or its contents.  Bind the panel
 " launch to \t:
-map <silent> <Leader>t :CtrlP()<CR>
-noremap <leader>b<space> :CtrlPBuffer<cr>
+" map <silent> <Leader>t :CtrlP()<CR>
+" noremap <leader>b<space> :CtrlPBuffer<cr>
 let g:ctrlp_custom_ignore = '\v[\/]dist$'
+
+" python with virtualenv support
+" py << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+  " project_base_dir = os.environ['VIRTUAL_ENV']
+  " activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  " execfile(activate_this, dict(__file__=activate_this))
+" EOF
 
